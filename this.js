@@ -80,7 +80,7 @@
   bar(); // global -> perda implícita
 }
 
-/* Example 4: mais binding explícito */
+/* Example 5: mais binding explícito */
 
 {
   function foo() {
@@ -98,7 +98,7 @@
   foo.call("Hello World"); // 11
 }
 
-/* Example 5: Hard binding */
+/* Example 6: Hard binding */
 
 {
   function foo() {
@@ -124,7 +124,7 @@
   */
 }
 
-/* Example 6: mais hard binding */
+/* Example 7: mais hard binding */
 
 {
   function foo(something) {
@@ -144,4 +144,43 @@
      uma nova função que chama a função original com o contexto
      do this definido como especificamos. Nesse caso usamos "obj".
   */
+}
+
+/* Example 8: "Contextos" de chamadas de API */
+
+{
+  function foo(el) {
+    console.log(el, this.id);
+  }
+  let obj = {
+    id: "hello world",
+  };
+
+  new Array(1, 2, 3).forEach(foo, obj);
+}
+
+/* Example 9: new binding */
+
+{
+  function foo(a) {
+    this.a = a;
+  }
+  let bar = new foo("Hello world");
+  console.log(bar.a);
+
+  /* O que acontece aqui é que, diferente de linguagens como java, C++,
+   * no javascript as funções construtoras são chamadas quando o operador
+   * new é utilizado, porém essas funções construtoras não estão associadas
+   * à classes e nem estão instanciando-as.
+   *
+   * Em resumo, em js, não existem funções construtoras e sim chamadas
+   * construtoras de funções
+   */
+
+  /* No exemplo acima, a chamada construtora da função foo irá:
+   * 1. Criar um objeto
+   * 2. Linkar o objeto ao [[Prototype]]
+   * 3. fazer um bind do this no objeto para a chamada de função
+   * 4. retornará o objeto recém construido, a menos que a função retorne seu proprio objeto alternado
+   */
 }
